@@ -1,0 +1,62 @@
+using System;
+using System.Collections.Generic;
+using System.Linq;
+using System.Text;
+using System.Threading.Tasks;
+
+namespace Working_with_JSON.Models
+{
+    public class ReadCsvFile
+    {
+        public void ReadFile()
+        {
+        //Getting location of Desktop folder
+            string desktop = Environment.GetFolderPath(Environment.SpecialFolder.Desktop);
+            string filename = "records.csv";
+
+        //Build File Path
+            string filePath = $"{desktop}/{filename}";
+
+        //Read the CSV file
+            string csvFileContent = FileHelper.Read(filePath);
+            string[] records = csvFileContent.Replace("\r", "").Split(new[] { "\n" }, StringSplitOptions.RemoveEmptyEntries);
+
+            Console.WriteLine("List of Employee Salaries");
+            Console.WriteLine("-------------------------");
+         //Print out all records to the console using an indexed approach
+         //Skip the Header row 1
+            for (int i = 1; i < records.Length - i; i++)
+            {
+                //Get all properties from the record
+                string[] properties = records[i].Split(',');
+                //our properties should be at least 5 items long
+                if (properties.Length > 1)
+                {
+                    Console.WriteLine($"{properties[1].PadRight(10)}\t{properties[2]}");
+                }
+            }
+            Console.WriteLine();
+            Console.WriteLine("List of All Employee Details");
+            Console.WriteLine("----------------------------");
+
+            //Print out all records to the console - Using an Enumerated approach
+            foreach (var record in records)
+            {
+                //Get all properties from the record
+                string[] properties = record.Split(',');
+                //Our properties should be at least 5 items long
+                if (properties.Length > 1)
+                {
+                    foreach (var property in properties)
+                    {
+                        //Pad the column length so that columns are consistent length of 10 characters
+                        string entry = property.PadRight(10);
+                        Console.Write($"{entry}");
+                        Console.Write("\t");
+                    }
+                    Console.Write("\n");
+                }
+            }
+        }
+    }
+}
